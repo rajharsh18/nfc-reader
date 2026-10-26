@@ -81,7 +81,7 @@ class _EventTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = event.granted ? lime : coral;
+    final color = event.granted ? blue : coral;
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(

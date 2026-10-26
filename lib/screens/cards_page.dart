@@ -123,7 +123,7 @@ class _EmptyCards extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.badge_outlined, color: lime, size: 48),
+          Icon(Icons.badge_outlined, color: blue, size: 48),
           SizedBox(height: 14),
           Text(
             'No cards saved',
@@ -152,8 +152,8 @@ String _statusLabel(NfcAvailability? availability) {
 
 Color _statusColor(NfcAvailability? availability) {
   return switch (availability) {
-    NfcAvailability.enabled => lime,
-    NfcAvailability.disabled => brass,
+    NfcAvailability.enabled => blue,
+    NfcAvailability.disabled => sky,
     NfcAvailability.unsupported => coral,
     null => mist,
   };

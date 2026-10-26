@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
-const ink = Color(0xFF10140F);
-const paper = Color(0xFF1C261A);
-const paperHigh = Color(0xFF243026);
-const line = Color(0xFF3C4A34);
-const lime = Color(0xFFD6F25C);
-const limeInk = Color(0xFF172000);
-const brass = Color(0xFFE4C27A);
-const mist = Color(0xFF9AA894);
-const foam = Color(0xFFF4F7EF);
+const ink = Color(0xFF070E1A);
+const paper = Color(0xFF101C30);
+const paperHigh = Color(0xFF16263F);
+const line = Color(0xFF2C4260);
+const blue = Color(0xFF1070F8);
+const onBlue = Color(0xFFFFFFFF);
+const sky = Color(0xFF8EBEFF);
+const mist = Color(0xFF93A7C4);
+const foam = Color(0xFFF4F7FC);
 const coral = Color(0xFFFF6B57);
 
 ThemeData buildTheme() {
   final scheme = ColorScheme.fromSeed(
-    seedColor: lime,
+    seedColor: blue,
     brightness: Brightness.dark,
-    primary: lime,
-    onPrimary: limeInk,
-    secondary: brass,
-    onSecondary: const Color(0xFF2A2108),
+    primary: blue,
+    onPrimary: onBlue,
+    secondary: sky,
+    onSecondary: const Color(0xFF071426),
     error: coral,
     onError: const Color(0xFF2D0906),
     surface: ink,
@@ -34,7 +34,7 @@ ThemeData buildTheme() {
     brightness: Brightness.dark,
     colorScheme: scheme,
     scaffoldBackgroundColor: ink,
-    splashColor: lime.withValues(alpha: 0.12),
+    splashColor: blue.withValues(alpha: 0.16),
     textTheme: ThemeData(
       brightness: Brightness.dark,
     ).textTheme.apply(bodyColor: foam, displayColor: foam),
@@ -59,8 +59,8 @@ ThemeData buildTheme() {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(52),
-        backgroundColor: lime,
-        foregroundColor: limeInk,
+        backgroundColor: blue,
+        foregroundColor: onBlue,
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
@@ -76,7 +76,7 @@ ThemeData buildTheme() {
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: lime,
+        foregroundColor: blue,
         textStyle: const TextStyle(fontWeight: FontWeight.w700),
       ),
     ),
@@ -88,24 +88,24 @@ ThemeData buildTheme() {
       border: border,
       enabledBorder: border,
       focusedBorder: border.copyWith(
-        borderSide: const BorderSide(color: lime, width: 1.4),
+        borderSide: const BorderSide(color: blue, width: 1.4),
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFF171E16),
-      indicatorColor: lime,
+      backgroundColor: const Color(0xFF0C1626),
+      indicatorColor: blue,
       height: 68,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         final selected = states.contains(WidgetState.selected);
         return TextStyle(
           fontSize: 12,
           fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-          color: selected ? lime : mist,
+          color: selected ? blue : mist,
         );
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         final selected = states.contains(WidgetState.selected);
-        return IconThemeData(color: selected ? limeInk : mist);
+        return IconThemeData(color: selected ? onBlue : mist);
       }),
     ),
     dividerColor: line,

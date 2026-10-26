@@ -86,13 +86,13 @@ class _CardPageState extends State<CardPage> {
                   selected: card.gateIds.contains(gate.id),
                   showCheckmark: false,
                   labelStyle: TextStyle(
-                    color: card.gateIds.contains(gate.id) ? limeInk : foam,
+                    color: card.gateIds.contains(gate.id) ? onBlue : foam,
                     fontWeight: FontWeight.w600,
                   ),
-                  selectedColor: lime,
+                  selectedColor: blue,
                   backgroundColor: paper,
                   side: BorderSide(
-                    color: card.gateIds.contains(gate.id) ? lime : line,
+                    color: card.gateIds.contains(gate.id) ? blue : line,
                   ),
                   onSelected: (selected) {
                     final next = [...card.gateIds];

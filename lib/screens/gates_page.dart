@@ -89,7 +89,7 @@ class _GateTile extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 14, 8, 14),
           child: Row(
             children: [
-              const Icon(Icons.sensor_door_outlined, color: lime),
+              const Icon(Icons.sensor_door_outlined, color: blue),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -110,7 +110,7 @@ class _GateTile extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       allowed == 1 ? '1 card allowed' : '$allowed cards allowed',
-                      style: const TextStyle(color: brass, fontSize: 13),
+                      style: const TextStyle(color: sky, fontSize: 13),
                     ),
                   ],
                 ),

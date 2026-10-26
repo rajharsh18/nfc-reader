@@ -32,7 +32,7 @@ class PageHeader extends StatelessWidget {
         const Text(
           'GATEKEY',
           style: TextStyle(
-            color: lime,
+            color: blue,
             fontSize: 12,
             fontWeight: FontWeight.w800,
             letterSpacing: 2.2,
@@ -93,18 +93,18 @@ class CredentialFace extends StatelessWidget {
                   Text(
                     'GATEKEY',
                     style: TextStyle(
-                      color: lime,
+                      color: blue,
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.8,
                     ),
                   ),
                   Spacer(),
-                  Icon(Icons.contactless, color: brass),
+                  Icon(Icons.contactless, color: sky),
                 ],
               ),
               const SizedBox(height: 22),
-              Container(width: 42, height: 3, color: brass),
+              Container(width: 42, height: 3, color: sky),
               const SizedBox(height: 14),
               Text(
                 name,
@@ -120,7 +120,7 @@ class CredentialFace extends StatelessWidget {
               Text(
                 formatUid(uid),
                 style: const TextStyle(
-                  color: Color(0xFFD5DECC),
+                  color: Color(0xFFD6E4F7),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.3,
                 ),

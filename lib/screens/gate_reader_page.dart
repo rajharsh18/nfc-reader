@@ -157,7 +157,7 @@ class _Wait extends StatelessWidget {
         children: [
           Icon(
             scanning ? Icons.wifi_tethering : Icons.sensor_door_outlined,
-            color: lime,
+            color: blue,
             size: 56,
           ),
           const SizedBox(height: 16),
@@ -187,8 +187,8 @@ class _Result extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final granted = decision.granted;
-    final background = granted ? lime : coral;
-    final foreground = granted ? limeInk : const Color(0xFF2D0906);
+    final background = granted ? blue : coral;
+    final foreground = granted ? onBlue : const Color(0xFF2D0906);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),

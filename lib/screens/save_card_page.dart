@@ -170,13 +170,13 @@ class _SaveCardPageState extends State<SaveCardPage> {
                     selected: _gates.contains(gate.id),
                     showCheckmark: false,
                     labelStyle: TextStyle(
-                      color: _gates.contains(gate.id) ? limeInk : foam,
+                      color: _gates.contains(gate.id) ? onBlue : foam,
                       fontWeight: FontWeight.w600,
                     ),
-                    selectedColor: lime,
+                    selectedColor: blue,
                     backgroundColor: paper,
                     side: BorderSide(
-                      color: _gates.contains(gate.id) ? lime : line,
+                      color: _gates.contains(gate.id) ? blue : line,
                     ),
                     onSelected: (selected) {
                       setState(() {
@@ -211,7 +211,7 @@ class _SaveCardPageState extends State<SaveCardPage> {
             const SizedBox(height: 12),
             Text(
               'Already saved as ${existing.name}. Saving opens that card.',
-              style: const TextStyle(color: brass, height: 1.35),
+              style: const TextStyle(color: sky, height: 1.35),
             ),
           ],
           if (_error != null) ...[
@@ -269,7 +269,7 @@ class _ScanPanel extends StatelessWidget {
         children: [
           Icon(
             scanning ? Icons.wifi_tethering : Icons.contactless,
-            color: lime,
+            color: blue,
             size: 42,
           ),
           const SizedBox(height: 12),
