@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hce_service_desc">GateKey card</string>
+    <string name="hce_aid_group">Gate access credential</string>
+    <color name="ink">#FF10140F</color>
+</resources>
