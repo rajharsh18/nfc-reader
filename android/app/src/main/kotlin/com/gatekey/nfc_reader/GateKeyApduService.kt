@@ -19,6 +19,7 @@ class GateKeyApduService : HostApduService() {
         if (isSelectAid(apdu)) {
             selected = FileKind.NONE
             ndefFile = ndefFileFor(payload)
+            HceEvents.emit(HceEvents.SELECTED)
             return OK
         }
 
@@ -38,7 +39,11 @@ class GateKeyApduService : HostApduService() {
                 FileKind.NDEF -> ndefFile
                 FileKind.NONE -> return NOT_FOUND
             }
-            return readBinary(apdu, file)
+            val response = readBinary(apdu, file)
+            if (selected == FileKind.NDEF && isSuccess(response) && readCoversEnd(apdu, file)) {
+                HceEvents.emit(HceEvents.READ)
+            }
+            return response
         }
 
         return UNKNOWN
@@ -47,6 +52,7 @@ class GateKeyApduService : HostApduService() {
     override fun onDeactivated(reason: Int) {
         selected = FileKind.NONE
         ndefFile = ByteArray(0)
+        HceEvents.emit(HceEvents.LEFT)
     }
 
     private enum class FileKind { NONE, CC, NDEF }
@@ -108,6 +114,21 @@ class GateKeyApduService : HostApduService() {
             val length = apdu[4].toInt() and 0xFF
             if (length < 2) return null
             return ((apdu[5].toInt() and 0xFF) shl 8) or (apdu[6].toInt() and 0xFF)
+        }
+
+        private fun isSuccess(response: ByteArray): Boolean {
+            return response.size >= 2 &&
+                response[response.size - 2] == OK[0] &&
+                response[response.size - 1] == OK[1]
+        }
+
+        private fun readCoversEnd(apdu: ByteArray, file: ByteArray): Boolean {
+            if (apdu.size < 5) return false
+            val offset = ((apdu[2].toInt() and 0xFF) shl 8) or (apdu[3].toInt() and 0xFF)
+            if (offset < 0 || offset >= file.size) return false
+            var length = apdu[4].toInt() and 0xFF
+            if (length == 0) length = file.size - offset
+            return offset + length >= file.size
         }
 
         private fun readBinary(apdu: ByteArray, file: ByteArray): ByteArray {

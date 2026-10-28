@@ -37,6 +37,7 @@ Future<NfcAvailability> checkNfc() async {
 }
 
 String nfcErrorMessage(Object error) {
+  if (error is StateError && error.message.isNotEmpty) return error.message;
   final text = error.toString().toLowerCase();
   if (error is UnsupportedError || text.contains('not_supported')) {
     return 'This phone has no NFC reader.';
@@ -45,6 +46,27 @@ String nfcErrorMessage(Object error) {
     return 'Turn on NFC in system settings, then try again.';
   }
   return 'Could not read a card. Hold it flat against the phone and try again.';
+}
+
+String? nfcSessionFailure(NfcReaderSessionErrorIos error) {
+  if (_quietSessionEnd(error.code)) return null;
+  return switch (error.code) {
+    NfcReaderErrorCodeIos.readerSessionInvalidationErrorSessionTimeout =>
+      'The reader timed out. Hold the card against the phone and try again.',
+    NfcReaderErrorCodeIos.readerSessionInvalidationErrorSystemIsBusy =>
+      'NFC is busy. Try again in a moment.',
+    NfcReaderErrorCodeIos
+        .readerSessionInvalidationErrorSessionTerminatedUnexpectedly =>
+      'The card read stopped. Hold the card flat and try again.',
+    _ => 'Could not read a card. Hold it flat against the phone and try again.',
+  };
+}
+
+bool _quietSessionEnd(NfcReaderErrorCodeIos code) {
+  return code ==
+          NfcReaderErrorCodeIos.readerSessionInvalidationErrorUserCanceled ||
+      code ==
+          NfcReaderErrorCodeIos.readerSessionInvalidationErrorFirstNDEFTagRead;
 }
 
 class NfcScan {
@@ -78,7 +100,13 @@ class NfcScan {
           }
         },
         onSessionErrorIos: (error) {
-          if (!completer.isCompleted) completer.complete(null);
+          if (completer.isCompleted) return;
+          final failure = nfcSessionFailure(error);
+          if (failure == null) {
+            completer.complete(null);
+          } else {
+            completer.completeError(StateError(failure));
+          }
         },
       );
     } catch (error) {
@@ -190,8 +218,26 @@ String _hex(Uint8List bytes) {
   return buffer.toString().toUpperCase();
 }
 
+enum CardReaderEvent { selected, read, left }
+
 class CardEmulator {
   static const _channel = MethodChannel('com.gatekey.nfc_reader/hce');
+  static const _events = EventChannel('com.gatekey.nfc_reader/hce_events');
+
+  static Stream<CardReaderEvent> readerEvents() {
+    if (defaultTargetPlatform != TargetPlatform.android) {
+      return const Stream.empty();
+    }
+    return _events.receiveBroadcastStream().expand((value) sync* {
+      final event = switch (value) {
+        'selected' => CardReaderEvent.selected,
+        'read' => CardReaderEvent.read,
+        'left' => CardReaderEvent.left,
+        _ => null,
+      };
+      if (event != null) yield event;
+    });
+  }
 
   static Future<bool> supported() async {
     if (defaultTargetPlatform != TargetPlatform.android) return false;

@@ -3,13 +3,19 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ndef_record/ndef_record.dart';
+import 'package:nfc_manager/nfc_manager_ios.dart';
 import 'package:nfc_reader/credential.dart';
 import 'package:nfc_reader/models.dart';
+import 'package:nfc_reader/nfc_service.dart';
 import 'package:nfc_reader/vault.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  const mainGate = Gate(id: 'main', name: 'Main gate', detail: 'Front entrance');
+  const mainGate = Gate(
+    id: 'main',
+    name: 'Main gate',
+    detail: 'Front entrance',
+  );
   const server = Gate(id: 'server', name: 'Server room', detail: 'Restricted');
 
   SavedCard card({
@@ -85,6 +91,33 @@ void main() {
       credentialUid: second.uid,
     );
     expect(decision.granted, isFalse);
+  });
+
+  test('a failed reader session stays visible', () {
+    expect(
+      nfcSessionFailure(
+        const NfcReaderSessionErrorIos(
+          code: NfcReaderErrorCodeIos
+              .readerSessionInvalidationErrorSessionTimeout,
+          message: 'timeout',
+        ),
+      ),
+      contains('timed out'),
+    );
+    expect(
+      nfcSessionFailure(
+        const NfcReaderSessionErrorIos(
+          code:
+              NfcReaderErrorCodeIos.readerSessionInvalidationErrorUserCanceled,
+          message: 'cancel',
+        ),
+      ),
+      isNull,
+    );
+    expect(
+      nfcErrorMessage(StateError('NFC is busy. Try again in a moment.')),
+      'NFC is busy. Try again in a moment.',
+    );
   });
 
   test('reads a GateKey text record', () {

@@ -5,11 +5,8 @@ import 'theme.dart';
 import 'vault.dart';
 
 class VaultScope extends InheritedNotifier<Vault> {
-  const VaultScope({
-    required Vault vault,
-    required super.child,
-    super.key,
-  }) : super(notifier: vault);
+  const VaultScope({required Vault vault, required super.child, super.key})
+    : super(notifier: vault);
 
   static Vault of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<VaultScope>();
@@ -48,10 +45,7 @@ class PageHeader extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 6),
-        Text(
-          subtitle,
-          style: const TextStyle(color: mist, height: 1.35),
-        ),
+        Text(subtitle, style: const TextStyle(color: mist, height: 1.35)),
       ],
     );
   }
@@ -62,6 +56,7 @@ class CredentialFace extends StatelessWidget {
     required this.name,
     required this.uid,
     required this.caption,
+    this.highlight = false,
     this.onTap,
     super.key,
   });
@@ -69,12 +64,17 @@ class CredentialFace extends StatelessWidget {
   final String name;
   final String uid;
   final String caption;
+  final bool highlight;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final accent = highlight ? onBlue : blue;
+    final detail = highlight ? onBlue : sky;
+    final number = highlight ? onBlue : const Color(0xFFD6E4F7);
+    final captionColor = highlight ? onBlue : mist;
     return Material(
-      color: paperHigh,
+      color: highlight ? blue : paperHigh,
       borderRadius: BorderRadius.circular(24),
       child: InkWell(
         onTap: onTap,
@@ -82,35 +82,36 @@ class CredentialFace extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: line),
+            border: Border.all(color: highlight ? blue : line),
           ),
           padding: const EdgeInsets.all(18),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+              Row(
                 children: [
                   Text(
                     'GATEKEY',
                     style: TextStyle(
-                      color: blue,
+                      color: accent,
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.8,
                     ),
                   ),
-                  Spacer(),
-                  Icon(Icons.contactless, color: sky),
+                  const Spacer(),
+                  Icon(Icons.contactless, color: detail),
                 ],
               ),
               const SizedBox(height: 22),
-              Container(width: 42, height: 3, color: sky),
+              Container(width: 42, height: 3, color: detail),
               const SizedBox(height: 14),
               Text(
                 name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
+                  color: highlight ? onBlue : foam,
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.4,
@@ -119,14 +120,14 @@ class CredentialFace extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 formatUid(uid),
-                style: const TextStyle(
-                  color: Color(0xFFD6E4F7),
+                style: TextStyle(
+                  color: number,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.3,
                 ),
               ),
               const SizedBox(height: 14),
-              Text(caption, style: const TextStyle(color: mist)),
+              Text(caption, style: TextStyle(color: captionColor)),
             ],
           ),
         ),
